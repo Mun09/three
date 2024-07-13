@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import React from "react";
-import { getRandomInt } from "./utils/random.ts";
+import { getRandomFloat, getRandomInt } from "./utils/random.ts";
 import * as THREE from 'three';
 import Star from "./Star.tsx";
 import Galaxy from "./Galaxy.tsx";
@@ -21,6 +21,31 @@ const genBackgroundStars = () => {
     return stars;
 }
 
+const genGalaxies = () => {
+    const GALAXY_LIMIT = 5;
+    const BORDER = 20000;
+
+    const galaxies: JSX.Element[] = [];
+    for (let i = 0; i < GALAXY_LIMIT; i++) { // 3개의 Galaxy 생성
+        const center = [
+            getRandomInt(-BORDER, BORDER),
+            getRandomInt(-BORDER, BORDER),
+            getRandomInt(-BORDER, BORDER),
+        ];
+    
+        const rotation = [
+            getRandomFloat(0, 2 * Math.PI),
+            getRandomFloat(0, 2 * Math.PI),
+            getRandomFloat(0, 2 * Math.PI)
+        ]
+
+        console.log(rotation);
+
+        galaxies.push(<Galaxy key={i} center={center} rotation={rotation} />); // 각 Galaxy에 100개의 Star
+    }
+    return galaxies;
+};
+
 function App() {
     return (
         <Canvas
@@ -35,7 +60,7 @@ function App() {
         <axesHelper args={[20000]} />
         <OrbitControls />
         { genBackgroundStars() }
-        <Galaxy />
+        { genGalaxies() }
         </Canvas>
     );
 }
